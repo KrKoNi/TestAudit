@@ -29,9 +29,9 @@ public class WorkspaceController : ControllerBase
         var response = await _workspaceService.CreateWorkspace(workspace);
         if (response == null)
         {
-            return new BadRequestResult();
+            return BadRequest(response);
         }
-        return new OkResult();
+        return Ok(response);
     }
     
 }

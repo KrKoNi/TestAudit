@@ -1,7 +1,10 @@
-﻿using Microsoft.OpenApi.Extensions;
+﻿
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Context;
+using TestAudit.Controllers;
 using TestAudit.Entities;
 using TestAudit.Helpers.Audit;
 
@@ -22,7 +25,8 @@ public class AuditAspect : OnMethodBoundaryAspect, IOnExceptionAspect
     }
     public override void OnExit(MethodExecutionArgs args)
     {
-        var auditUser = new HttpContextAccessor().HttpContext?.User;
+        var controller = args.Instance as ControllerBase;
+        var auditUser = controller.User.Identity.Name;
         
         var auditEvent = new AuditEvent
         {
@@ -45,13 +49,14 @@ public class AuditAspect : OnMethodBoundaryAspect, IOnExceptionAspect
         using (LogContext.PushProperty("audit_data", JsonConvert.SerializeObject(auditData)))
         using (LogContext.PushProperty("audit_status", JsonConvert.SerializeObject(auditStatus)))
         {
-            Log.Information(string.Empty);
+            Log.Information("{audit_user} {audit_event} {audit_data} {audit_status}");
         }
     }
 
     public override void OnException(MethodExecutionArgs args)
     {
-        var auditUser = new HttpContextAccessor().HttpContext?.User;
+        var controller = args.Instance as ControllerBase;
+        var auditUser = controller.User.FindFirst(ClaimTypes.NameIdentifier);
         
         var auditEvent = new AuditEvent
         {
@@ -74,7 +79,7 @@ public class AuditAspect : OnMethodBoundaryAspect, IOnExceptionAspect
         using (LogContext.PushProperty("audit_data", JsonConvert.SerializeObject(auditData)))
         using (LogContext.PushProperty("audit_status", JsonConvert.SerializeObject(auditStatus)))
         {
-            Log.Information(string.Empty);
+            Log.Information("{audit_user} {audit_event} {audit_data} {audit_status}");
         }
     }
 }
