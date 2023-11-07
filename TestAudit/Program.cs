@@ -3,9 +3,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NpgsqlTypes;
 using Serilog;
-using Serilog.Sinks.PostgreSQL;
+using TestAudit.Repositories;
 using TestAudit.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +16,8 @@ Log.Logger = new LoggerConfiguration()
 
 
 builder.Services.AddScoped<IWorkspaceService, WorkspaceService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 builder.Services.AddControllers();
 
 builder.Services.AddAuthorization();

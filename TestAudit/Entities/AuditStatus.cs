@@ -1,6 +1,9 @@
-﻿namespace TestAudit.Entities;
+﻿using TestAudit.Helpers;
+
+namespace TestAudit.Entities;
 
 public class AuditStatus
 {
-    public string? Status { get; set; }
+    public StatusCode? Code { get; set; }
+    public string? Message { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestAudit.Aspects;
 using TestAudit.Helpers.Audit;
@@ -19,12 +20,12 @@ public class WorkspaceController : ControllerBase
     }
     
     [AllowAnonymous]
-    [HttpPost("login")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [HttpPost("create_workspace")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [AuditAspect(command: AuditCommand.CreateWorkspace)]
-    public async Task<IActionResult> Post([FromBody] Workspace workspace)
+    public async Task<IActionResult> CreateWorkspace([FromBody] Workspace workspace)
     {
         var response = await _workspaceService.CreateWorkspace(workspace);
         if (response == null)
