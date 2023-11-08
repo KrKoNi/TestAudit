@@ -18,4 +18,8 @@ public class AuditService : IAuditService
         return _auditRepository.GetAllAuditRecords();
     }
 
+    public IEnumerable<AuditRecord> GetFilteredAuditRecords(AuditFilter auditFilter)
+    {
+        return _auditRepository.GetFilteredAuditRecords(auditFilter);
+    }
 }

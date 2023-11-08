@@ -10,12 +10,18 @@ public class AuditHelper
     public static AuditUser GetUserInfo(MethodExecutionArgs args)
     {
         var controller = args.Instance as ControllerBase;
+        
         var userId = controller?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var successParseUserId = long.TryParse(userId, out var longUserId);
+        var parsedValue = successParseUserId ? longUserId : -1;
+        
         var userName = controller?.User.FindFirstValue(ClaimTypes.Name);
+        
         var permissions = controller?.User.FindAll("permission");
+        
         var auditUser = new AuditUser
         {
-            Id = userId,
+            Id = parsedValue,
             Name = userName,
             Permissions = permissions.Select(x => x.Value).ToList()
         };
