@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-
+﻿
 namespace TestAudit.Entities;
 
 public class AuditUser

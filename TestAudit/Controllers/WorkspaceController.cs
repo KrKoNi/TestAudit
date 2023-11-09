@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestAudit.Aspects;
-using TestAudit.Helpers.Audit;
+using TestAudit.Entities;
 using TestAudit.Models;
 using TestAudit.Services;
 
@@ -20,7 +20,7 @@ public class WorkspaceController : ControllerBase
     }
     
     [AllowAnonymous]
-    [HttpPost("create_workspace")]
+    [HttpPost("CreateWorkspace")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,6 +33,17 @@ public class WorkspaceController : ControllerBase
             return BadRequest(response);
         }
         return Ok(response);
+    }
+    
+    [AllowAnonymous]
+    [HttpGet("GetWorkspace")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [AuditAspect(command: AuditCommand.CreateWorkspace)]
+    public async Task<IActionResult> GetWorkspace([FromQuery] Workspace workspace)
+    {
+        return Ok(workspace);
     }
     
 }

@@ -1,4 +1,5 @@
 ﻿using TestAudit.Entities;
+using TestAudit.Models;
 using TestAudit.Repositories;
 
 namespace TestAudit.Services;

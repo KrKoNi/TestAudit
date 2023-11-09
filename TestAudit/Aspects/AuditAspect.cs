@@ -2,14 +2,15 @@
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Context;
-using TestAudit.Helpers.Audit;
+using TestAudit.Entities;
+using TestAudit.Helpers;
 
 namespace TestAudit.Aspects;
 
 using PostSharp.Aspects;
 
 [Serializable]
-public class AuditAspect : OnMethodBoundaryAspect, IOnExceptionAspect
+public class AuditAspect : OnMethodBoundaryAspect
 {
     private readonly AuditCommand _command;
 
@@ -20,30 +21,14 @@ public class AuditAspect : OnMethodBoundaryAspect, IOnExceptionAspect
     
     public override void OnExit(MethodExecutionArgs args)
     {
-        SendAuditMessage(false, args);
-    }
-
-    public override void OnException(MethodExecutionArgs args)
-    {
-        SendAuditMessage(true, args);
-    }
-
-    private void SendAuditMessage(bool IsException, MethodExecutionArgs args)
-    {
-
         var auditUser = AuditHelper.GetUserInfo(args);
         var auditEvent = AuditHelper.GetAuditEvent(_command);
         var auditData = AuditHelper.GetAuditData(args);
-        var auditStatus = AuditHelper.GetAuditStatus(IsException, args);
-
-        using (LogContext.PushProperty("audit_user", JsonConvert.SerializeObject(auditUser)))
-        using (LogContext.PushProperty("audit_event", JsonConvert.SerializeObject(auditEvent)))
-        using (LogContext.PushProperty("audit_data", JsonConvert.SerializeObject(auditData)))
-        using (LogContext.PushProperty("audit_status", JsonConvert.SerializeObject(auditStatus)))
-        {
-            Log.Information("{audit_user} {audit_event} {audit_data} {audit_status}");
-        }
+        var auditStatus = AuditHelper.GetAuditStatus(args);
+        AuditLogger.SendAuditMessage(auditUser, auditEvent, auditData, auditStatus);
     }
+
+    
 
     
 }

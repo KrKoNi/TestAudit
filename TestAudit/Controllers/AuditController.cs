@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TestAudit.Entities;
+using TestAudit.Models;
 using TestAudit.Services;
 
 namespace TestAudit.Controllers;

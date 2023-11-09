@@ -1,0 +1,38 @@
+﻿namespace TestAudit.Entities;
+
+public enum AuditCommand
+{
+    Login = 0,
+    Logout = 1,
+    Registration = 2,
+    ResetPassword = 3,
+    UpdateUserprofile = 4,
+    DisableUser = 5,
+    SetUserRole = 6,
+    DelegateUserRole = 7,
+    RevokeUserRole = 8,
+    CreateGroup = 9,
+    IncludeUserInGroup = 10,
+    DeleteUserFromGroup = 11,
+    SetUserRoleInGroup = 12,
+    DelegateUserRoleInGroup = 13,
+    RevokeUserRoleInGroup = 14,
+    UpdateGroup = 15,
+    DeleteGroup = 16,
+    CreateWorkspace = 17,
+    IncludeGroupInWorkspace = 18,
+    DeleteGroupFromWorkspace = 19,	
+    UpdateWorkspace = 20,
+    DisableWorkspace = 21,
+    CreateGeoLayerInWorkspace = 22,
+    UpdateGeoLayer = 23,
+    DeleteGeoLayer = 24,
+    CreateGeoObject = 25,
+    UpdateGeoObject = 26,
+    DeleteGeoObject = 27,
+    CreateDataCatalog = 28,
+    UpdateDataCatalog = 29,
+    DeleteDataCatalog = 30,
+    CreateStatisticalGeoObjectsReport = 31,
+    CreateAuditReport = 32
+}

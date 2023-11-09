@@ -1,4 +1,4 @@
-﻿namespace TestAudit.Entities;
+﻿namespace TestAudit.Models;
 
 public class AuditRecord
 {

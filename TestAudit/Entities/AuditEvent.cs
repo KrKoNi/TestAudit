@@ -1,5 +1,4 @@
 ﻿using Microsoft.OpenApi.Extensions;
-using TestAudit.Helpers.Audit;
 
 namespace TestAudit.Entities;
 

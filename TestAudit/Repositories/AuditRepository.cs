@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using TestAudit.Entities;
+using TestAudit.Models;
 
 namespace TestAudit.Repositories;
 
@@ -53,15 +54,15 @@ public class AuditRepository : IAuditRepository
             List<AuditRecord> auditRecords = new List<AuditRecord>();
             
             List<string> conditions = new List<string>();
-            if (auditFilter.AuditUsers is not null && auditFilter.AuditUsers.Count != 0)
+            if (auditFilter.AuditUserIds is not null && auditFilter.AuditUserIds.Count != 0)
             {
                 conditions.Add("CAST(audit_user->>'Id' AS bigint) = ANY(@AuditUsers)");
             }
-            if (auditFilter.AuditEvents is not null && auditFilter.AuditEvents.Count != 0)
+            if (auditFilter.AuditEventIds is not null && auditFilter.AuditEventIds.Count != 0)
             {
                 conditions.Add("CAST(audit_event->>'Id' AS bigint) = ANY(@AuditEvents)");
             }
-            if (auditFilter.AuditStatuses is not null && auditFilter.AuditStatuses.Count != 0)
+            if (auditFilter.AuditStatusIds is not null && auditFilter.AuditStatusIds.Count != 0)
             {
                 conditions.Add("CAST(audit_status->>'Code' AS bigint) = ANY(@AuditStatuses)");
             }
@@ -81,17 +82,17 @@ public class AuditRepository : IAuditRepository
 
             using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
             {
-                if (auditFilter.AuditUsers is not null && auditFilter.AuditUsers.Count != 0)
+                if (auditFilter.AuditUserIds is not null && auditFilter.AuditUserIds.Count != 0)
                 {
-                    command.Parameters.AddWithValue("AuditUsers", auditFilter.AuditUsers);
+                    command.Parameters.AddWithValue("AuditUsers", auditFilter.AuditUserIds);
                 }
-                if (auditFilter.AuditEvents is not null && auditFilter.AuditEvents.Count != 0)
+                if (auditFilter.AuditEventIds is not null && auditFilter.AuditEventIds.Count != 0)
                 {
-                    command.Parameters.AddWithValue("AuditEvents", auditFilter.AuditEvents);
+                    command.Parameters.AddWithValue("AuditEvents", auditFilter.AuditEventIds);
                 }
-                if (auditFilter.AuditStatuses is not null && auditFilter.AuditStatuses.Count != 0)
+                if (auditFilter.AuditStatusIds is not null && auditFilter.AuditStatusIds.Count != 0)
                 {
-                    command.Parameters.AddWithValue("AuditStatuses", auditFilter.AuditStatuses);
+                    command.Parameters.AddWithValue("AuditStatuses", auditFilter.AuditStatusIds);
                 }
                 if (auditFilter.StartDate.HasValue)
                 {
@@ -103,7 +104,6 @@ public class AuditRepository : IAuditRepository
                 }
 
                 connection.Open();
-                Console.WriteLine(command.CommandText);
                 using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
