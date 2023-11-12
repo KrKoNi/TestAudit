@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PostSharp.Aspects;
 using TestAudit.Entities;
-using static System.Int64;
 
 namespace TestAudit.Helpers;
 
@@ -13,8 +12,7 @@ public static class AuditHelper
         var controller = args.Instance as ControllerBase;
 
         var userIdString = controller?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        long userId;
-        if (!TryParse(userIdString, out userId))
+        if (!long.TryParse(userIdString, out var userId))
         {
             userId = -1;
         }
