@@ -2,9 +2,9 @@
 
 public class AuditStatus
 {
-    private int _code;
+    private int? _code;
 
-    public int Code
+    public int? Code
     {
         get => _code;
         set
@@ -16,7 +16,7 @@ public class AuditStatus
 
     public string Message { get; private set; }
     
-    private string GetStatusMessage(int statusCode)
+    private string GetStatusMessage(int? statusCode)
     {
         return statusCode switch
         {
